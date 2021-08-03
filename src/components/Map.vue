@@ -5,19 +5,26 @@
 
   <GMapMap
       :center="center"
-      :zoom="7"
+      :zoom="12"
       map-type-id="terrain"
       style="width: 500px; height: 300px"
   >
     <GMapCluster>
       <GMapMarker
           :key="index"
-          v-for="(r, index) in responseData.betshops"
-          :position="r.location"
+          v-for="(m, index) in responseData.betshops"
+          :position="m.location"
           :clickable="true"
           :draggable="true"
-          @click="center=r.location"
-      />
+          :icon="'images/ic_pin_normal.png'"
+          @click="openMarker(m.id)"
+      >
+<GMapInfoWindow
+        :opened="openedMarkerID === m.id"
+      >
+        <div>I am in info window {{ m.id }} </div>
+      </GMapInfoWindow>
+      </GMapMarker>
     </GMapCluster>
   </GMapMap>
 
@@ -28,45 +35,38 @@
 
 export default {
   name: 'Map',
-  props: {},
+  props: ['btnText'],
 
   data() {
     return {
-
+openedMarkerID: null,
         center: {lat: 48.137154, lng: 11.576124},
-      markers: [
-        {
-          position: {
-            lat: 51.093048, lng: 6.842120
-          },
-        }
-        , // Along list of clusters
-      ],
-
-        userPositionLat: 48.137154,
-        userPositionLng: 11.576124,
-
         responseData: {},
-        responseMAP: {},
-        apiKey: process.env.VUE_APP_GMAP_API_KEY,
-      mapConfig: {
-        zoom: 16,
-        center: {
-          lat: -7,
-          lng: 112
-        }
-      }
     };
 },
   methods: {
+      openMarker(id) {
+       this.openedMarkerID = id
+       console.log(this.openedMarkerID);
+
+      /*  const currentMarker = JSON.parse(this.responseData.betshops).filter( element => element.id == 2350329);
+console.log(currentMarker); */
+console.log(this.responseData);
+
+this.responseData.betshops.forEach(function (element) {
+    if(element['id'] === id){
+        console.log('found', element)
+    }
+})
+
+    },
     async loadBetshops() {
       const offset = 0.03
-      const top = this.userPositionLat + offset
-      const left = this.userPositionLng + offset
-      const right = this.userPositionLat - offset
-      const bottom = this.userPositionLng - offset
-/*   const fetchURL = 'https://interview.superology.dev/betshops?boundingBox=' + top + ',' + left + ',' + right + ',' + bottom; */
-  const fetchURL = `https://interview.superology.dev/betshops?boundingBox=${top},${left},${right},${bottom}`
+      const top = this.center.lat + offset
+      const left = this.center.lng + offset
+      const right = this.center.lat - offset
+      const bottom = this.center.lng - offset
+    const fetchURL = `https://interview.superology.dev/betshops?boundingBox=${top},${left},${right},${bottom}`
 
   this.responseData = (await (await fetch(fetchURL)).json())
 
@@ -82,25 +82,19 @@ export default {
             this.center.lng = success.coords.longitude;
 
             await this.loadBetshops();
-            console.log(this.responseData.betshops[0]);
           },
           async error => {
             console.log(error);
             await this.loadBetshops();
-            console.log(this.responseData);
           }
         );
       } else {
         console.log('browser not supproting geolocation API');
       }
     },
-
   },
 async mounted(){
   await this.initLocation();
-
-
-
  },
 }
 </script>
