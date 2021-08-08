@@ -29,18 +29,24 @@ export default {
       responseWeather: {},
     };
   },
-  methods: {},
+  methods: {
+    getWeather() {
+      fetch(
+        `https://api.openweathermap.org/data/2.5/onecall?lat=${this.cityLat}&lon=${this.cityLng}&exclude=current,minutely,hourly&units=metric&appid=51d09d216793dfdb944ee55154be6239`
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          this.responseWeather = data;
+        })
+        .then((data) => console.log(data))
+        .catch((err) => console.log(err.message));
+    },
+  },
   mounted() {
-    fetch(
-      `https://api.openweathermap.org/data/2.5/onecall?lat=${this.cityLat}&lon=${this.cityLng}&exclude=current,minutely,hourly&units=metric&appid=51d09d216793dfdb944ee55154be6239`
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        this.responseWeather = data;
-      })
-      .catch((err) => console.log(err.message));
-
-    console.log(this.responseWeather);
+    this.getWeather();
+  },
+  updated() {
+    this.getWeather();
   },
 };
 </script>

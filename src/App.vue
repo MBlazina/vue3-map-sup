@@ -30,12 +30,10 @@
     :county="selectedMarker.county"
     :markerSelected="markerInfo"
   />
-  <!--  <p>{{selectedMarker.location.lat}}</p> -->
   <Weather
     class="weather"
-    v-if="selectedMarker.location && selectedMarker.location.lat"
-    :cityLat="selectedMarker.location.lat"
-    :cityLng="selectedMarker.location.lng"
+    :cityLat="weatherLocation.lat"
+    :cityLng="weatherLocation.lng"
   />
 </template>
 
@@ -51,13 +49,17 @@ export default {
   },
   data() {
     return {
+      weatherLocation: {
+        lat: 48.137154,
+        lng: 11.576124,
+      },
       center: {
         lat: 48.137154,
         lng: 11.576124,
       },
       openedMarkerID: null,
       responseData: {},
-      responseWeather: {},
+      /* responseWeather: {}, */
       selectedMarker: {},
       markerInfo: false,
     };
@@ -70,11 +72,23 @@ export default {
             this.center.lat = success.coords.latitude;
             this.center.lng = success.coords.longitude;
 
+            this.weatherLocation.lat = success.coords.latitude;
+            this.weatherLocation.lng = success.coords.longitude;
+
+            /* console.log(this.selectedMarker.location.lat);
+            console.log(this.selectedMarker.location.lng); */
+
             await this.loadBetshops();
           },
           async (error) => {
             console.log(error);
+
+            /*  console.log(this.selectedMarker.location.lat);
+            console.log(this.selectedMarker.location.lng); */
+
             await this.loadBetshops();
+            /*  this.selectedMarker.location.lat = 48.137154;
+            this.selectedMarker.location.lng = 11.576124; */
           }
         );
       } else {
@@ -92,6 +106,17 @@ export default {
       this.responseData = await (await fetch(fetchURL)).json();
     },
 
+    /*    loadWeather(){
+      console.log('getting weather')
+      fetch(
+      `https://api.openweathermap.org/data/2.5/onecall?lat=${this.center.lat}&lon=${this.center.lng}&exclude=current,minutely,hourly&units=metric&appid=51d09d216793dfdb944ee55154be6239`
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        this.responseWeather = data;
+      })
+      .catch((err) => console.log(err.message));
+    }, */
     async openMarker(id) {
       this.markerInfo = true;
       this.openedMarkerID = id;
@@ -100,9 +125,11 @@ export default {
       );
     },
   },
+
   async mounted() {
     await this.loadBetshops();
     await this.initLocation();
+
     /*     await this.loadWeather();
     console.log(this.responseWeather) */
   },
@@ -120,7 +147,7 @@ export default {
   padding: 0;
   box-sizing: border-box;
 }
-body{
+body {
   background-color: #ebebeb;
 }
 #app {
@@ -132,9 +159,9 @@ body{
 }
 .map,
 .shop-info,
-.weather{
+.weather {
   /* offset-x | offset-y | blur-radius | color */
-box-shadow: 0 0 10px rgba($color: #000000, $alpha: 0.2);
+  box-shadow: 0 0 10px rgba($color: #000000, $alpha: 0.2);
 }
 .map {
   border: 2px solid white;

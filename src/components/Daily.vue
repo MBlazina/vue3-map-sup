@@ -18,7 +18,6 @@ export default {
             currentTempMax: this.forecast.temp.mmax
         }
     },
-    
  props: [
      "forecast"
  ],
