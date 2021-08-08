@@ -13,7 +13,11 @@
         :position="m.location"
         :clickable="true"
         :draggable="true"
-        :icon="m.id === selectedMarker.id ? 'images/ic_pin_active.png' : 'images/ic_pin_normal.png'"  
+        :icon="
+          m.id === selectedMarker.id
+            ? 'images/ic_pin_active.png'
+            : 'images/ic_pin_normal.png'
+        "
         @click="openMarker(m.id)"
       >
         <!-- <GMapInfoWindow :opened="openedMarkerID === m.id">
@@ -101,7 +105,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import './scss/_colors.scss';
+@import "./scss/_colors.scss";
 
 /* GMAP RESET */
 .gmnoprint,
@@ -115,7 +119,7 @@ export default {
 }
 body {
   background-color: $lightGrey;
-  font-family: 'Lato', sans-serif;
+  font-family: "Lato", sans-serif;
   color: $darkGrey;
 }
 #app {

@@ -24,7 +24,7 @@ export default {
       weather: this.forecast.weather[0].description,
       clouds: this.forecast.clouds + "%",
       pressure: this.forecast.pressure + " hpa",
-   /*    currentTempMin: this.forecast.temp.min + "C",
+      /*    currentTempMin: this.forecast.temp.min + "C",
       currentTempMax: this.forecast.temp.max + "C", */
     };
   },
@@ -66,8 +66,8 @@ export default {
     background: $oddRow;
   }
   &.today {
-border-left: 3px solid $blue;
-}
+    border-left: 3px solid $blue;
+  }
   .weather-info {
     p {
       font-size: 13px;
@@ -75,37 +75,35 @@ border-left: 3px solid $blue;
     }
   }
   .weather-temp {
-      margin-left: auto;
-      align-self: flex-start;
+    margin-left: auto;
+    align-self: flex-start;
     display: flex;
     align-items: flex-start;
     padding-top: 15px;
     p {
-        color: white;
-        font-size: 10px;
-        font-weight: bold;
-        width: 40px;
-        height: 18px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin: 0 2px;
+      color: white;
+      font-size: 10px;
+      font-weight: bold;
+      width: 40px;
+      height: 18px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 2px;
     }
   }
 }
 
-
 .cold {
-  background: blue;
-  color: white;
+  background: $blue;
 }
 .warm {
-  background: green;
+  background: $green;
 }
 .hot {
-  background: orange;
+  background: $orange;
 }
 .very-hot {
-  background: red;
+  background: $red;
 }
 </style>

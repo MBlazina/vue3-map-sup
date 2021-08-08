@@ -1,20 +1,22 @@
 <template>
   <div v-if="markerSelected">
     <div class="info">
-        <div>
-            <h1>{{ name }}</h1>
-            <p>{{ address }}</p>
-            <div class="city-county">
-                <p class="city">{{ city }} -</p>
-                <p class="county">{{ county }}</p>
-            </div>
+      <div>
+        <h1>{{ name }}</h1>
+        <p>{{ address }}</p>
+        <div class="city-county">
+          <p class="city">{{ city }} -</p>
+          <p class="county">{{ county }}</p>
         </div>
+      </div>
     </div>
 
     <p class="open" v-if="currTime >= openTime && currTime <= closeTime">
-      Open now until {{ this.closeTime.toFixed(2) }}
+      Open now until {{ this.closeTime }}:00
     </p>
-    <p class="open" v-else>Open tomorrow at {{ this.openTime.toFixed(2) }}-{{ this.closeTime.toFixed(2) }}</p>
+    <p class="open" v-else>
+      Open tomorrow at {{ this.openTime }}:00-{{ this.closeTime }}:00
+    </p>
   </div>
   <p class="no-store" v-else>Please select a store</p>
 </template>
@@ -40,28 +42,28 @@ export default {
   flex-direction: column;
 }
 .info {
-    display: flex;
-    &::before {
-        width:24px;
-        height: 24px;
-        content: url('/images/ic_bet_shop_location.png');
-        display: inline-block;
-    }
+  display: flex;
+  &::before {
+    width: 24px;
+    height: 24px;
+    content: url("/images/ic_bet_shop_location.png");
+    display: inline-block;
+  }
 }
 .city-county {
-    p {
-        display: inline-block;
-    }
+  p {
+    display: inline-block;
+  }
 }
 .open {
-    margin-top: auto;
-    display: flex;
-    align-items: center;
-    &::before {
-        width:24px;
-        height: 25px;
-        content: url('/images/ic_bet_shop_hours.png')
-    }
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  &::before {
+    width: 24px;
+    height: 25px;
+    content: url("/images/ic_bet_shop_hours.png");
+  }
 }
 .no-store {
   display: flex;

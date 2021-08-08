@@ -30,9 +30,9 @@ export default {
     };
   },
   watch: {
-    cityLat(){
+    cityLat() {
       this.getWeather();
-    }
+    },
   },
 
   methods: {
@@ -51,7 +51,6 @@ export default {
   mounted() {
     this.getWeather();
   },
-
 };
 </script>
 
