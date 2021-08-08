@@ -13,7 +13,7 @@
         :position="m.location"
         :clickable="true"
         :draggable="true"
-        :icon="'images/ic_pin_normal.png'"
+        :icon="m.id === selectedMarker.id ? 'images/ic_pin_active.png' : 'images/ic_pin_normal.png'"  
         @click="openMarker(m.id)"
       >
         <!-- <GMapInfoWindow :opened="openedMarkerID === m.id">
@@ -30,11 +30,7 @@
     :county="selectedMarker.county"
     :markerSelected="markerInfo"
   />
-  <Weather
-    class="weather"
-    :cityLat="weatherLocation.lat"
-    :cityLng="weatherLocation.lng"
-  />
+  <Weather class="weather" :cityLat="center.lat" :cityLng="center.lng" />
 </template>
 
 <script>
@@ -49,17 +45,12 @@ export default {
   },
   data() {
     return {
-      weatherLocation: {
-        lat: 48.137154,
-        lng: 11.576124,
-      },
       center: {
         lat: 48.137154,
         lng: 11.576124,
       },
       openedMarkerID: null,
       responseData: {},
-      /* responseWeather: {}, */
       selectedMarker: {},
       markerInfo: false,
     };
@@ -71,24 +62,11 @@ export default {
           async (success) => {
             this.center.lat = success.coords.latitude;
             this.center.lng = success.coords.longitude;
-
-            this.weatherLocation.lat = success.coords.latitude;
-            this.weatherLocation.lng = success.coords.longitude;
-
-            /* console.log(this.selectedMarker.location.lat);
-            console.log(this.selectedMarker.location.lng); */
-
             await this.loadBetshops();
           },
           async (error) => {
             console.log(error);
-
-            /*  console.log(this.selectedMarker.location.lat);
-            console.log(this.selectedMarker.location.lng); */
-
             await this.loadBetshops();
-            /*  this.selectedMarker.location.lat = 48.137154;
-            this.selectedMarker.location.lng = 11.576124; */
           }
         );
       } else {
@@ -106,17 +84,6 @@ export default {
       this.responseData = await (await fetch(fetchURL)).json();
     },
 
-    /*    loadWeather(){
-      console.log('getting weather')
-      fetch(
-      `https://api.openweathermap.org/data/2.5/onecall?lat=${this.center.lat}&lon=${this.center.lng}&exclude=current,minutely,hourly&units=metric&appid=51d09d216793dfdb944ee55154be6239`
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        this.responseWeather = data;
-      })
-      .catch((err) => console.log(err.message));
-    }, */
     async openMarker(id) {
       this.markerInfo = true;
       this.openedMarkerID = id;
@@ -129,14 +96,13 @@ export default {
   async mounted() {
     await this.loadBetshops();
     await this.initLocation();
-
-    /*     await this.loadWeather();
-    console.log(this.responseWeather) */
   },
 };
 </script>
 
 <style lang="scss">
+@import './scss/_colors.scss';
+
 /* GMAP RESET */
 .gmnoprint,
 .gm-fullscreen-control {
@@ -148,7 +114,9 @@ export default {
   box-sizing: border-box;
 }
 body {
-  background-color: #ebebeb;
+  background-color: $lightGrey;
+  font-family: 'Lato', sans-serif;
+  color: $darkGrey;
 }
 #app {
   display: grid;
@@ -156,11 +124,11 @@ body {
   align-items: start;
   justify-content: center;
   grid-gap: 15px;
+  padding-top: 65px;
 }
 .map,
 .shop-info,
 .weather {
-  /* offset-x | offset-y | blur-radius | color */
   box-shadow: 0 0 10px rgba($color: #000000, $alpha: 0.2);
 }
 .map {

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>weather</h1>
+    <h2>Weather</h2>
     <Daily :forecast="day" v-for="day in firstFiveDays" :key="day.dt" />
   </div>
 </template>
@@ -29,10 +29,16 @@ export default {
       responseWeather: {},
     };
   },
+  watch: {
+    cityLat(){
+      this.getWeather();
+    }
+  },
+
   methods: {
     getWeather() {
       fetch(
-        `https://api.openweathermap.org/data/2.5/onecall?lat=${this.cityLat}&lon=${this.cityLng}&exclude=current,minutely,hourly&units=metric&appid=51d09d216793dfdb944ee55154be6239`
+        `https://api.openweathermap.org/data/2.5/onecall?lat=${this.cityLat}&lon=${this.cityLng}&exclude=current,minutely,hourly&units=metric&appid=e90b288c7d66f6b0cd0e705506e554c1`
       )
         .then((res) => res.json())
         .then((data) => {
@@ -45,11 +51,18 @@ export default {
   mounted() {
     this.getWeather();
   },
-  updated() {
-    this.getWeather();
-  },
+
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
+.weather {
+  background: white;
+}
+h2 {
+  text-align: center;
+  font-size: 18px;
+  line-height: 35px;
+  font-weight: bold;
+}
 </style>
