@@ -18,7 +18,7 @@
       Open tomorrow at {{ this.openTime }}:00-{{ this.closeTime }}:00
     </p>
   </div>
-  <p class="no-store" v-else>Please select a store</p>
+  <p class="no-store" v-else>Please select a betshop</p>
 </template>
 
 <script>

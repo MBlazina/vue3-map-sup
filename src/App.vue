@@ -1,11 +1,5 @@
 <template>
-  <GMapMap
-    class="map"
-    :center="center"
-    :zoom="12"
-    map-type-id="terrain"
-    style=""
-  >
+  <GMapMap class="map" :center="center" :zoom="12" map-type-id="terrain">
     <GMapCluster>
       <GMapMarker
         :key="index"
@@ -20,9 +14,6 @@
         "
         @click="openMarker(m.id)"
       >
-        <!-- <GMapInfoWindow :opened="openedMarkerID === m.id">
-            <div>I am in info window {{ m.id }}</div>
-          </GMapInfoWindow> -->
       </GMapMarker>
     </GMapCluster>
   </GMapMap>
@@ -105,7 +96,10 @@ export default {
 </script>
 
 <style lang="scss">
-@import "./scss/_colors.scss";
+@import "./scss/colors";
+@import "./scss/mixins";
+
+$shopSectionHeight: 195px;
 
 /* GMAP RESET */
 .gmnoprint,
@@ -123,12 +117,14 @@ body {
   color: $darkGrey;
 }
 #app {
-  display: grid;
-  grid-template-columns: 400px 315px;
-  align-items: start;
-  justify-content: center;
-  grid-gap: 15px;
-  padding-top: 65px;
+  @include dt {
+    display: grid;
+    grid-template-columns: 400px 315px;
+    align-items: start;
+    justify-content: center;
+    grid-gap: 15px;
+    padding-top: 65px;
+  }
 }
 .map,
 .shop-info,
@@ -140,11 +136,14 @@ body {
   grid-row: 1 / span 2;
   grid-column: 1 / span 1;
   &.vue-map-container {
-    height: 100%;
+    height: calc(100vh - #{$shopSectionHeight} - 35px);
+    @include dt {
+      height: 100%;
+    }
   }
 }
 .shop-info {
-  min-height: 195px;
+  min-height: $shopSectionHeight;
   grid-row: 1 / span 1;
   grid-column: 2 / span 1;
 }

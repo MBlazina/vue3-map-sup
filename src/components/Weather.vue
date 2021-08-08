@@ -38,13 +38,12 @@ export default {
   methods: {
     getWeather() {
       fetch(
-        `https://api.openweathermap.org/data/2.5/onecall?lat=${this.cityLat}&lon=${this.cityLng}&exclude=current,minutely,hourly&units=metric&appid=e90b288c7d66f6b0cd0e705506e554c1`
+        `https://api.openweathermap.org/data/2.5/onecall?lat=${this.cityLat}&lon=${this.cityLng}&exclude=current,minutely,hourly&units=metric&appid=${this.weatherAPI}`
       )
         .then((res) => res.json())
         .then((data) => {
           this.responseWeather = data;
         })
-        .then((data) => console.log(data))
         .catch((err) => console.log(err.message));
     },
   },
