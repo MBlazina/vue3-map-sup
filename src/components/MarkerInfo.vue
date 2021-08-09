@@ -73,6 +73,7 @@ export default {
 h1,
 p {
   font-size: 17px;
+  line-height: 22px;
   font-weight: normal;
 }
 </style>
